@@ -12,13 +12,14 @@ fs.readdir(path, function(err, files) {
         if (/[0-9]{3,}/.test(files[i])) {
             (function(i) {
                 fs.readdir(path + '/' + files[i] + '/', function(err, files2) {
+                    var source;
                     var newDir = __dirname + '/' + files[i];
                     var j = 0;
-                    var source = path + '/' + files[i] + '/' + files2[j] + '/index.html';
                     var target = newDir + '/index.html';
 
                     for(; j < files2.length; j++) {
                         if (/y\-a\-v\-a/.test(files2[j])) {
+                            source = path + '/' + files[i] + '/' + files2[j] + '/index.html';
                             ids.push(files[i]);
                             if (!fs.existsSync(newDir)) {
                                 fs.mkdirSync(newDir);
