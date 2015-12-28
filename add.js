@@ -1,5 +1,6 @@
 // run regularly!
 // copies y-a-v-a's solutions to here.
+// @TODO do not only copy index.hmtl files, just copy everything from within the y-a-v-a folder
 var fs = require('fs');
 
 var path = '/Users/vincentb/Sites/solving-sol';
