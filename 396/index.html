@@ -22,24 +22,20 @@ function number396() {
     var radius = canvas.height * 0.22; // 4 * 0.22 = 0.88
     var margin = canvas.height * 0.04; // 3 * 0.04 = 0.12 + 0.88 = 1.00
     var offset = (canvas.width - canvas.height) / 2;
-    
+
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     var polygons = [5, 6, 7, 8];
     var colors = ['#050505','#ffe632','#d4405a','#0094c8'];
-    var orders = [[1, 3, 0, 2, 4], [0, 2, 4, 1, 3, 5], [1, 3, 5, 0, 2, 4, 6], [0, 2, 4, 6, 1, 3, 5, 7]];
+    var orders = [
+        [1, 3, 0, 2, 4],
+        [0, 2, 4, 1, 3, 5],
+        [1, 3, 5, 0, 2, 4, 6],
+        [0, 2, 4, 6, 1, 3, 5, 7]
+    ];
     context.lineWidth = 0;
-    var index = 0;
-    var sides;
-    var offsetX;
-    var offsetY;
-    var coords;
-    var order;
-    var angle;
-    var i = 1;
-    var j = 0;
-    var x, y;
-    
+    var index = 0, sides, offsetX, offsetY, coords, order, angle, i = 1, j = 0, x, y;
+
     for (var k = 1; k <= polygons.length; k++) {
         index = k - 1;
         context.save();
@@ -49,7 +45,7 @@ function number396() {
         context.translate(offsetX, offsetY);
         coords = [];
         order = orders[index];
-    
+
         for(i = 1; i <= sides; i++) {
             angle = (2 * Math.PI) * (i / sides) - (0.5 * Math.PI);
             x = radius + Math.cos(angle) * radius;
