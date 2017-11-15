@@ -65,7 +65,7 @@ req.onload = function() {
             current = getRandomKey(yavas.length);
             iframe.src = url + yavas[current];
             showMessage();
-        }, 10000);
+        }, 16 * 1000); // average time a museum visitor stand in front of a painting
     }
 };
 req.open('get', './solutions.json', true);
@@ -80,13 +80,16 @@ function getRandomKey(l) {
 }
 
 function showMessage() {
+    var el = document.querySelectorAll('div')[0];
     window.setTimeout(function() {
-        var el = document.querySelectorAll('div')[0];
         el.style.display = 'block';
         window.setTimeout(function() {
             el.style.display = 'none';
         }, 5000);
     }, 800);
+    el.onclick = function() {
+        el.style.display = 'none';
+    };
 }
 
 showMessage();
