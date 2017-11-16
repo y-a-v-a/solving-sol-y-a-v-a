@@ -2,96 +2,108 @@
 <meta charset="utf-8">
 <title>y-a-v-a.org ❤︎ sol lewitt</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="favicon.png" type="image/x-icon">
 <style>
 html, body {
-    padding: 0;
-    margin: 0;
-    width:100%;
-    height: 100%;
+  padding: 0;
+  margin: 0;
+  width:100%;
+  height: 100%;
 }
 iframe {
-    border: none;
-    width: 100%;
-    height: 100%;
+  border: none;
+  width: 100%;
+  height: 100%;
 }
 div {
-    position: fixed;
-    bottom: 16px;
-    left: 16px;
-    background: #222;
-    height: 64px;
-    width: 272px;
-    display: none;
-    border-radius: 4px;
-    color: white;
-    padding: 8px;
-    font-family: sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
-    box-shadow: 0 0 10px #666;
-    font-weight: lighter;
-    text-rendering: optimizeLegibility;
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  background: #222;
+  height: 64px;
+  width: 272px;
+  display: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px;
+  font-family: sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 0 10px #666;
+  font-weight: lighter;
+  text-rendering: optimizeLegibility;
 }
 a {
-    color: white;
+  color: white;
 }
 </style>
 <iframe></iframe>
 <div>
-    This work is made by <a href="http://www.y-a-v-a.org">y-a-v-a.org</a> under MIT license.
-    Idea to make Sol LeWitt Walldrawings for web is from <a href="http://www.solvingsol.com">Brad Bouse</a>.
-    Code on <a href="https://github.com/y-a-v-a/solving-sol">GitHub</a>.
+  This work is made by <a href="http://www.y-a-v-a.org">y-a-v-a.org</a> under MIT license.
+  Idea to make Sol LeWitt Wall Drawings for web is from <a href="http://www.solvingsol.com">Brad Bouse</a>.
+  Code on <a href="https://github.com/y-a-v-a/solving-sol">GitHub</a>.
 </div>
 <script>
-var iframe = document.querySelectorAll('iframe')[0];
+  (function() {
+    var iframe = document.querySelectorAll('iframe')[0];
 
-var current;
-var url = './';
+    var url = './';
+    var drawings = [];
+    var cache = [];
 
-var req = new XMLHttpRequest();
-req.onload = function() {
-    var data = this.responseText;
-    var solutions = JSON.parse(data);
-    var yavas = [];
+    var req = new XMLHttpRequest();
+    req.onload = function() {
+      var data = this.responseText;
+      var solutions = JSON.parse(data);
 
-    for (var i = 0; i < solutions.length; i++) {
-        yavas.push(solutions[i] + '/index.html');
-    }
-    if (yavas.length > 0) {
-        current = getRandomKey(yavas.length);
-        iframe.src = url + yavas[current];
+      for (var i = 0; i < solutions.length; i++) {
+        drawings.push(solutions[i] + '/index.html');
+      }
 
-        window.setInterval(function() {
-            current = getRandomKey(yavas.length);
-            iframe.src = url + yavas[current];
-            showMessage();
-        }, 16 * 1000); // average time a museum visitor stand in front of a painting
-    }
-};
-req.open('get', './solutions.json', true);
-req.send();
+      if (drawings.length == 0) {
+        return;
+      }
 
-function getRandomKey(l) {
-    var value = Math.floor(Math.random() * l);
-    while(value === current) {
-        value = Math.floor(Math.random() * l);
-    }
-    return value;
-}
+      setFrameSrc(drawings);
 
-function showMessage() {
-    var el = document.querySelectorAll('div')[0];
-    window.setTimeout(function() {
-        el.style.display = 'block';
-        window.setTimeout(function() {
-            el.style.display = 'none';
-        }, 5000);
-    }, 800);
-    el.onclick = function() {
-        el.style.display = 'none';
+      // average time a museum visitor stand in front of a painting
+      var interval = 16 * 1000;
+      window.setInterval(setFrameSrc, interval, drawings);
     };
-}
 
-showMessage();
+    req.open('get', './solutions.json', true);
+    req.send();
+
+    function setFrameSrc(drawings) {
+      var number = getRandomKey();
+      iframe.src = url + number;
+      showMessage();
+    }
+
+    function getRandomKey() {
+      if (!cache.length) {
+        cache = drawings.slice(0);
+      }
+      var start = Math.floor(Math.random() * cache.length);
+
+      return cache.splice(start, 1);
+    }
+
+    function showMessage() {
+      var el = document.querySelectorAll('div')[0];
+
+      window.setTimeout(function() {
+        el.style.display = 'block';
+
+        window.setTimeout(function() {
+          el.style.display = 'none';
+        }, 5000);
+      }, 800);
+
+      el.onclick = function() {
+        el.style.display = 'none';
+      };
+    }
+  })();
 
 </script>
