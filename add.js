@@ -36,6 +36,7 @@ fs.readdir(path, function(err, files) {
             });
           }
         }
+        ids = ids.sort();
         fs.writeFile(__dirname + '/solutions.json', JSON.stringify(ids, null, 4), function(err) {
           if (err) {
             throw err;
