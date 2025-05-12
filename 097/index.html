@@ -16,6 +16,7 @@
   </style>
   <link rel="shortcut icon" href="favicon.png">
   <canvas></canvas>
+  <script src="MersenneTwister.js"></script>
   <script src="PerlinNoise.js"></script>
   <script>
     function number097() {
@@ -36,27 +37,30 @@
       ctx.clearRect(0, 0, c.width, c.height);
 
       // initialize
+      const seed = Date.now() >> 0;
+      const mersenneTwister = new MersenneTwister(seed);
       const TWO_PI = Math.PI * 2;
+      mersenneTwister.init_genrand(seed);
 
       function getRadius(multiplier) {
-        return Math.round(Math.random() * multiplier) + 20;
+        return Math.round(mersenneTwister.genrand_res53() * multiplier) + 20;
       }
 
       function getAngle() {
-        return Math.random() * TWO_PI;
+        return mersenneTwister.genrand_res53() * TWO_PI;
       }
 
       function getY() {
-        return Math.round(Math.random() * height);
+        return Math.round(mersenneTwister.genrand_res53() * height);
       }
 
       function getX(rightSide) {
         let leftThreshold = rightSide ? halfWidth : 0;
-        return Math.round(Math.random() * halfWidth) + leftThreshold;
+        return Math.round(mersenneTwister.genrand_res53() * halfWidth) + leftThreshold;
       }
 
       function getDirection() {
-        return Math.round(Math.random()) === 0 ? -1 : 1;
+        return Math.round(mersenneTwister.genrand_res53()) === 0 ? -1 : 1;
       }
 
       ctx.strokeStyle = '#333';
